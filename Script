@@ -122,16 +122,42 @@ UIAspectRatioConstraint_6.Parent = textanot
 UIAspectRatioConstraint_6.AspectRatio = 5.080
 UIAspectRatioConstraint_6.DominantAxis = Enum.DominantAxis.Height
 
--- Copiar link do Discord para a área de transferência
-local Platoboost = {
-    AccountID = 54641, -- Coloque aqui o ID da sua conta Platoboost
-    GetLink = function()
-        return string.format("https://gateway.platoboost.com/a/%i?id=%i", Platoboost.AccountID, game:GetService("Players").LocalPlayer.UserId)
-    end
-}
+-- Plato configuration
+local accountId = 54641; -- Plato account id [IMPORTANT]
+local allowPassThrough = false; -- Allow user through if error occurs, may reduce security
+local allowKeyRedeeming = false; -- Automatically check keys to redeem if valid
+local useDataModel = false;
 
-local discordLink = Platoboost.GetLink() -- Aqui substituí o link pelo do Platoboost
-setclipboard(discordLink)
+-- Plato callbacks
+local onMessage = function(message)
+    --logic
+end;
+
+-- Plato internals [START]
+local fRequest, fStringFormat, fSpawn, fWait = request or http.request or http_request or syn.request, string.format, task.spawn, task.wait;
+local localPlayerId = game:GetService("Players").LocalPlayer.UserId;
+local rateLimit, rateLimitCountdown, errorWait = false, 0, false;
+-- Plato internals [END]
+
+-- Plato global functions [START]
+function getLink()
+    return fStringFormat("https://gateway.platoboost.com/a/%i?id=%i", accountId, localPlayerId);
+end;
+
+-- Novo link para copiar
+local platoboostLink = getLink()
+setclipboard(platoboostLink)
+
+function verify(key)
+    if errorWait or rateLimit then 
+        return false;
+    end;
+
+    onMessage("Checking key...");
+
+    -- Resto do código...
+end;
+-- Plato global functions 
 
 local duration = 2 -- Duração da notificação em segundos
 local endTime = tick() + duration
